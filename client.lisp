@@ -13,34 +13,30 @@
 (defun urlparam (url param)
   (flet ((encode (chr)
            (format nil "%~x" (char-code chr))))
-    (mapcar 
-    (compose 
-      (lambda (lis)
-        (apply #'concatenate 'string)) 
-      (lambda (str)
-        (map 'list
-             (lambda (chr)
-               (if (string= chr #\Space)
-                   (encode chr)
-                   (string chr)))
-             str))
-      (lambda (lis)
-              (format nil "~a=~a&" (car lis) (cdr lis))))
-      param)))
+    (format nil "~a?~{~A~}"
+            url
+            (mapcar 
+            (compose 
+              (lambda (lis)
+                (apply #'concatenate 'string lis)) 
+              (lambda (str)
+                (map 'list
+                     (lambda (chr)
+                       (if (string= chr #\Space)
+                           (encode chr)
+                           (string chr)))
+                     str))
+              (lambda (lis)
+                      (format nil "~a=~a&" (car lis) (cdr lis))))
+      param))))
 
-(urlparam "https://" '(("$orderby" . "_created_at ") ("unti" . "kami")))
+(jojo:parse (dex:get (urlparam "https://versatileapi.herokuapp.com/api/text/all" '(("$orderby" . "_created_at desc") ("$limit" . "20"))) ) )
 (concatenate 'string (values-list '("a" "i")))
 (apply #'concatenate 'string '("a" "i"))
 
+(defun getext (num)
+  (let ((url (urlparam "https://versatileapi.herokuapp.com/api/text/all" `(("$orderby" . "_created_at desc") ("$limit" . ,(write-to-string num)))) ))
+    (jojo:parse (dex:get url))))
 
-(defun getpost ()
-  (let ((post (jojo:parse (dex:get "https://versatileapi.herokuapp.com/api/text/all?$orderby=_created_at%20desc&$limit=20&")) ))
-    (car post)))
+(getext 2)
 
-(getpost)
-
-(cdr (cons "ai" "ue"))
-(format nil "%~x" (char-code #\Space))
-(string= #\a #\a)
-
-(position #\a "baobab" :start 0)
