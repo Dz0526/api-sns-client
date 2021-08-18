@@ -1,0 +1,21 @@
+https://versatileapi.herokuapp.com/api エンドポイント
+
+ユーザ登録, 更新
+POST, PUT /user/create_user
+
+ユーザ検索
+ 単一
+ GET /user/:user_id
+ 全部
+ GET /user/all
+
+つぶやく
+POST /text
+Headers
+Authorization: HelloWorld
+
+つぶやき検索
+ 単一
+ GET /text/:id
+ 全部 
+ GET /text/all?$orderby=created_at desc&$limit=20
