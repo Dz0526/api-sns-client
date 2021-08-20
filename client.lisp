@@ -38,5 +38,22 @@
   (let ((url (urlparam "https://versatileapi.herokuapp.com/api/text/all" `(("$orderby" . "_created_at desc") ("$limit" . ,(write-to-string num)))) ))
     (jojo:parse (dex:get url))))
 
-(getext 2)
+(defun getext-id (id)
+  (let ((url (format nil "~a~a" "https://versatileapi.herokuapp.com/api/text/" id) ) )
+    (print url)
+    (jojo:parse (dex:get url))))
+
+(defun printext (hashs)
+  (loop for table
+        in hashs
+        do (format t "?: ~a" (getf table ':|text|))
+        do (princ #\newline)  
+        do (princ "-----------------------------------------------------------------------")
+        do (princ #\newline)))
+
+(gethash 'text table)
+
+(getext 3)
+(getext-id "826e43e4-b248-4470-bc21-482a93879c94") 
+(printext (getext 10))
 
