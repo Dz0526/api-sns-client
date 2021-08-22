@@ -40,14 +40,18 @@
 
 (defun getext-id (id)
   (let ((url (format nil "~a~a" "https://versatileapi.herokuapp.com/api/text/" id) ) )
-    (print url)
     (jojo:parse (dex:get url))))
+
+(defun postext (text))
 
 (defun printext (hashs)
   (loop for table
         in hashs
         do (format t "?: ~a" (getf table ':|text|))
         do (princ #\newline)  
+        do (if (getf table ':|in_reply_to_text_id|)
+               (progn (format t "replyed ?: ~a" (getf (getext-id (getf table ':|in_reply_to_text_id|)) ':|text|))
+                      (princ #\newline)))
         do (princ "-----------------------------------------------------------------------")
         do (princ #\newline)))
 
